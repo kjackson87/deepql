@@ -1,9 +1,11 @@
 name: deepql
 channels:
 - conda-forge
+- pytorch
 dependencies:
 - python=3.9.7
-- numpy=1.21.4
-- matplotlib=3.5.1
 - gym=0.21.0
 - gym-box2d=0.21.0
+- matplotlib=3.5.1
+- numpy=1.21.4
+- pytorch=1.10.1
