@@ -12,7 +12,7 @@ def run(args):
 
   agent = agents.RandomAgent(env.action_space)
 
-  rewards = []
+  rewards = utils.SMAMeter('Rewards', window=5)
 
   for i_episode in range(args.episodes):
     cur_observation = env.reset()
@@ -26,13 +26,13 @@ def run(args):
       cur_observation = next_observation
       episode_reward += reward
       if done:
-        rewards.append(episode_reward)
+        rewards.update(episode_reward)
         print(f'Episode {i_episode} finished after {t+1} timesteps with total reward {episode_reward}')
         break
 
-  utils.plot_rewards(rewards)
-  plt.show()
-  agent.loss_meter.plot()
+  fig, axes = plt.subplots(2)
+  rewards.plot(axes[0])
+  agent.loss_meter.plot(axes[1])
   plt.show()
   env.close()
 

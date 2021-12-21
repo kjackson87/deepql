@@ -27,3 +27,12 @@ class Meter():
       fig, ax = plt.subplots()
     ax.plot(self.values)
     ax.set_title(self.name)
+    return ax
+
+class SMAMeter(Meter):
+  def __init__(self, name, window=5):
+      super().__init__(name)
+      self.window = window
+  def plot(self, ax=None):
+    ax = super().plot(ax)
+    ax.plot(moving_average(self.values, self.window))
