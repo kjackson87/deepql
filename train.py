@@ -15,13 +15,15 @@ def run(args):
   rewards = []
 
   for i_episode in range(args.episodes):
-    observation = env.reset()
+    cur_observation = env.reset()
+    reward = None
     episode_reward = 0
     for t in range(100):
       if args.render: env.render()
-      # print(observation)
-      action = agent.select_action(observation)
-      observation, reward, done, info = env.step(action)
+      action = agent.select_action(cur_observation)
+      next_observation, reward, done, info = env.step(action)
+      agent.update(cur_observation, action, reward, next_observation, done)
+      cur_observation = next_observation
       episode_reward += reward
       if done:
         rewards.append(episode_reward)
@@ -29,6 +31,8 @@ def run(args):
         break
 
   utils.plot_rewards(rewards)
+  plt.show()
+  agent.loss_meter.plot()
   plt.show()
   env.close()
 
